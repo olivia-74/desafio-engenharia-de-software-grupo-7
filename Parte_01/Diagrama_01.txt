@@ -1,5 +1,4 @@
 @startuml
-!theme amiga
 autonumber
 skinparam style strictuml
 
@@ -36,12 +35,16 @@ else Livro sem reserva
     deactivate E
     
     alt Empréstimo em atraso
-        RC --> TR : notificarAtraso(valorMulta)
-        TR --> U : "Atraso detectado. Devolva o livro ou pague a multa para renovar."
+        RC --> TR : notificarImpedimentoPorAtraso()
+        TR --> U : "Renovação bloqueada por atraso. Devolva o livro ou pague a multa para renovar."
         
         alt Usuário opta por pagar multa via Pix
             U -> TR : escolherPagamentoPix()
-            TR -> RC : solicitarPix(valorMulta)
+            TR -> RC : solicitarPix()
+            RC -> E : calcularMultaAte(dataAtual)
+            activate E
+            E --> RC : valorMulta
+            deactivate E
             RC -> PIX : gerarCodigoPix(valorMulta)
             activate PIX
             PIX --> RC : codigoPix
@@ -50,22 +53,8 @@ else Livro sem reserva
             RC --> TR : exibirCodigoPix(codigoPix)
             TR --> U : exibeQRCodeEPix(codigoPix)
             
-            U -> TR : confirmarPagamento()
-            TR -> RC : validarPagamento()
-            RC -> PIX : checarStatusPagamento()
-            activate PIX
-            PIX --> RC : pagamentoConfirmado
-            deactivate PIX
-            
-            RC -> E : renovarEmprestimo()
-            activate E
-            E --> RC : novaDataDevolucao
-            deactivate E
-            RC --> TR : confirmarRenovacao(novaDataDevolucao)
-            TR --> U : "Multa quitada! Empréstimo renovado com sucesso."
-            
-        else Usuário não paga a multa
-            TR --> U : "Renovação Não Permitida. Realize a devolução do exemplar."
+        else Usuário não escolhe pagar a multa
+            TR --> U : "Realize a devolução do livro."
         end
         
     else Empréstimo em dia

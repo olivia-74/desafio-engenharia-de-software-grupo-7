@@ -26,29 +26,31 @@ class Emprestimo {
   - dataRetirada : Date
   - dataEntregaPrevista : Date
   - dataEntregaRealizada : Date
-  - freteStrategy : CalculoFreteStrategy
+  - estrategiaFrete : EstrategiaFrete
   + calcularFrete() : double
-  + setFreteStrategy(freteStrategy : CalculoFreteStrategy) : void
+  + setEstrategiaFrete(estrategiaFrete : EstrategiaFrete) : void
 }
 
-interface CalculoFreteStrategy <<Strategy>> {
-  + calcular(endereco : Endereco, dimensoes : double[], peso : double) : double
+interface EstrategiaFrete <<Strategy>> {
+  + calcularFrete(endereco : Endereco, exemplar : Exemplar) : double
 }
 
-class FreteEmpresaA {
-  + calcular(endereco : Endereco, dimensoes : double[], peso : double) : double
+abstract class Empresa
+
+class EmpresaA {
+  + calcularFrete(endereco : Endereco, exemplar : Exemplar) : double
 }
 
-class FreteEmpresaB {
-  + calcular(endereco : Endereco, dimensoes : double[], peso : double) : double
+class EmpresaB {
+  + calcularFrete(endereco : Endereco, exemplar : Exemplar) : double
 }
 
-class FreteEmpresaC {
-  + calcular(endereco : Endereco, dimensoes : double[], peso : double) : double
+class EmpresaC {
+  + calcularFrete(endereco : Endereco, exemplar : Exemplar) : double
 }
 
-class FreteEmpresaD {
-  + calcular(endereco : Endereco, dimensoes : double[], peso : double) : double
+class EmpresaD {
+  + calcularFrete(endereco : Endereco, exemplar : Exemplar) : double
 }
 
 Livro "1" -- "1..*" Exemplar
@@ -56,10 +58,11 @@ Usuario "1" -- "0..*" Emprestimo : realiza
 Exemplar "1" -- "0..*" Emprestimo : participa de
 Usuario "1" -- "1" Endereco : possui
 
-Emprestimo o--> "1" CalculoFreteStrategy : usa
+Emprestimo --> "0..1" EstrategiaFrete : usa
 
-CalculoFreteStrategy <|.. FreteEmpresaA
-CalculoFreteStrategy <|.. FreteEmpresaB
-CalculoFreteStrategy <|.. FreteEmpresaC
-CalculoFreteStrategy <|.. FreteEmpresaD
+EstrategiaFrete <|.. Empresa
+EstrategiaFrete <|.. EmpresaA
+EstrategiaFrete <|.. EmpresaB
+EstrategiaFrete <|.. EmpresaC
+EstrategiaFrete <|.. EmpresaD
 @enduml
