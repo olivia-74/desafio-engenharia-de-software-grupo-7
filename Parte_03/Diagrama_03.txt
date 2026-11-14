@@ -1,0 +1,65 @@
+@startuml Diagrama_03
+
+class Livro {
+  - titulo : String
+  - autor : String
+}
+
+class Exemplar {
+  - codigo : int
+  - dimensoes : double[]
+  - peso : double
+}
+
+class Usuario {
+  - codigo : int
+  - nome : String
+}
+
+class Endereco {
+  - numero : int
+  - rua : String
+  - cidade : String
+}
+
+class Emprestimo {
+  - dataRetirada : Date
+  - dataEntregaPrevista : Date
+  - dataEntregaRealizada : Date
+  - freteStrategy : CalculoFreteStrategy
+  + calcularFrete() : double
+  + setFreteStrategy(freteStrategy : CalculoFreteStrategy) : void
+}
+
+interface CalculoFreteStrategy <<Strategy>> {
+  + calcular(endereco : Endereco, dimensoes : double[], peso : double) : double
+}
+
+class FreteEmpresaA {
+  + calcular(endereco : Endereco, dimensoes : double[], peso : double) : double
+}
+
+class FreteEmpresaB {
+  + calcular(endereco : Endereco, dimensoes : double[], peso : double) : double
+}
+
+class FreteEmpresaC {
+  + calcular(endereco : Endereco, dimensoes : double[], peso : double) : double
+}
+
+class FreteEmpresaD {
+  + calcular(endereco : Endereco, dimensoes : double[], peso : double) : double
+}
+
+Livro "1" -- "1..*" Exemplar
+Usuario "1" -- "0..*" Emprestimo : realiza
+Exemplar "1" -- "0..*" Emprestimo : participa de
+Usuario "1" -- "1" Endereco : possui
+
+Emprestimo o--> "1" CalculoFreteStrategy : usa
+
+CalculoFreteStrategy <|.. FreteEmpresaA
+CalculoFreteStrategy <|.. FreteEmpresaB
+CalculoFreteStrategy <|.. FreteEmpresaC
+CalculoFreteStrategy <|.. FreteEmpresaD
+@enduml
