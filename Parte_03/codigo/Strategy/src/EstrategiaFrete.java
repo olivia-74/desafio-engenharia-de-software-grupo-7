@@ -1,3 +1,3 @@
 public interface EstrategiaFrete {
-    double calcularFrete(double valor);
+    double calcularFrete(Endereco endereco, Exemplar exemplar);
 }

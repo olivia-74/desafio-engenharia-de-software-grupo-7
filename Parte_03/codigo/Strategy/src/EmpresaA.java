@@ -1,6 +1,6 @@
-public class EmpresaA extends Empresa{
+public class EmpresaA implements EstrategiaFrete {
     @Override
-    public double calcularFrete(double valor) {
-        return valor * 0.10;
+    public double calcularFrete(Endereco endereco, Exemplar exemplar) {
+        return 10.00;
     }
 }

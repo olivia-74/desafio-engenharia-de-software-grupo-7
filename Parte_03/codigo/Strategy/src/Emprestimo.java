@@ -6,6 +6,7 @@ public class Emprestimo {
     private Date dataEntregaRealizada;
     private Exemplar exemplar;
     private Usuario usuario;
+    private EstrategiaFrete estrategiaFrete;
 
     public Emprestimo() {
     }
@@ -54,5 +55,13 @@ public class Emprestimo {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public void setEstrategiaFrete(EstrategiaFrete estrategiaFrete) {
+        this.estrategiaFrete = estrategiaFrete;
+    }
+
+    public double calcularFrete() {
+        return estrategiaFrete.calcularFrete(usuario.getEndereco(), exemplar);
     }
 }

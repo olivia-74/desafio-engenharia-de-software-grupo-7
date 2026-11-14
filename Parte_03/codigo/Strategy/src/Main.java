@@ -1,20 +1,35 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Locale;
 
 public class Main {
     public static void main(String[] args) {
-        double valorProduto = 100.0;
+        Endereco endereco = new Endereco(100, "Rua das Flores", "São Paulo");
+        Usuario usuario = new Usuario(1, "Ana", endereco);
+        Livro livro = new Livro("Padrões de Projeto", "Autor Exemplo");
+        Exemplar exemplar = new Exemplar(1, new double[] {20.0, 14.0, 2.0}, 0.5, livro);
 
-        List<Empresa> empresas = new ArrayList<>();
+        Emprestimo emprestimo = new Emprestimo();
+        emprestimo.setUsuario(usuario);
+        emprestimo.setExemplar(exemplar);
 
-        empresas.add(new EmpresaA());
-        empresas.add(new EmpresaB());
-        empresas.add(new EmpresaC());
+        emprestimo.setEstrategiaFrete(new EmpresaA());
+        exibirFrete("Empresa A", emprestimo);
 
-        for (Empresa empresa : empresas) {
-            double resultado = empresa.calcularFrete(valorProduto);
-            System.out.println("Resultado com a condição: \n" + empresa.getClass().getSimpleName() + "\n" + "Frete : " + resultado);
-        }
+        emprestimo.setEstrategiaFrete(new EmpresaB());
+        exibirFrete("Empresa B", emprestimo);
 
+        emprestimo.setEstrategiaFrete(new EmpresaC());
+        exibirFrete("Empresa C", emprestimo);
+
+        emprestimo.setEstrategiaFrete(new EmpresaD());
+        exibirFrete("Empresa D", emprestimo);
+    }
+
+    private static void exibirFrete(String nomeEmpresa, Emprestimo emprestimo) {
+        System.out.printf(
+                Locale.forLanguageTag("pt-BR"),
+                "%s: R$ %.2f%n",
+                nomeEmpresa,
+                emprestimo.calcularFrete()
+        );
     }
 }
